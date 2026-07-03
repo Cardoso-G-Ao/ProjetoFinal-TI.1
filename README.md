@@ -39,6 +39,6 @@ Se o jogador errar, o som de erro é emitido, é exibido seu total de pontos e e
 
 
 # Link do Video 
-<a>  <\a>
+[Visitar o video do Pitch do grupo 9 de TI-1](https://youtu.be/ilQOjXOv7vg)
 
 
