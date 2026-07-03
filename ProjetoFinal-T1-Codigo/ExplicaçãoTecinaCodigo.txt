@@ -1,0 +1,77 @@
+================================================================================
+          DOCUMENTAÇÃO TÉCNICA: SIMULADOR DO JOGO BOP-IT COM ARDUINO
+================================================================================
+
+1. OBJETIVO DO PROJETO
+--------------------------------------------------------------------------------
+O projeto feito em sala tem o objetivo de simular o clássico jogo "Bop-It" utilizando 
+um Arduino. O objetivo principal é desafiar os reflexos do jogador, que deve executar 
+comandos aleatórios gerados pelo sistema dentro de um limite de tempo que diminui 
+a cada acerto, tornando o jogo progressivamente mais rápido e difícil.
+
+2. FUNCIONAMENTO DO SISTEMA E COMPONENTES
+--------------------------------------------------------------------------------
+O código funciona da seguinte forma:
+
+* Geração de Comandos: O Arduino escolhe aleatoriamente uma ação entre 6 opções 
+  disponíveis: "Gire o Botão!", "Passe a Mão!", "Aperte Amarelo", "Aperte Azul", 
+  "Aperte Verde" ou "Aperte Vermelho", e exibe a instrução no Display LCD.
+
+* Identificação dos Comandos (Sensores):
+  - Para o comando "Gire o Botão!": A função 'lerPotFiltrado' lê o Potenciômetro 
+    e identifica se o jogador girou o eixo comparando a posição atual com a inicial.
+  - Para o comando "Passe a Mão!": A função 'verificarMaoPerto' usa o sensor 
+    ultrasonic para mandar um sinal sonoro pelo 'trigger' que bate na mão do jogador 
+    e volta pelo 'echo', identificando se a mão está a menos de 5 centímetros.
+  - Para os comandos de Apertar: O sistema monitora se o botão da cor solicitada 
+    (Amarelo, Azul, Verde ou Vermelho) foi pressionado.
+
+* Ativação dos Atuadores (LEDs e Buzzer):
+  - Em caso de ACERTO: O sistema aciona o 'LED RGB / LED Verde' e o Buzzer toca 
+    uma sequência de dois sons rápidos e agudos (frequências de 1000Hz e 1500Hz). 
+    O tempo limite para a próxima rodada diminui em 250 milissegundos.
+  - Em caso de ERRO ou TIMEOUT (tempo esgotado): O sistema aciona o 'LED Vermelho' 
+    e o Buzzer emite um som longo e grave (frequência de 300Hz), indicando o Fim de Jogo.
+
+--------------------------------------------------------------------------------
+3. ARQUITETURA DA LÓGICA DE CONTROLE (ESTRUTURA IF / ELSE)
+--------------------------------------------------------------------------------
+Funcionando na mesma lógica de um if / else, o Arduino fica checando continuamente 
+as entradas dentro do tempo limite. A estrutura de decisão do jogo funciona assim:
+
+// Se o tempo da rodada acabou antes de qualquer ação
+if (tempoEsgotado == true) {
+    Serial.println("TIMEOUT! Aciona som grave no Buzzer + LED Vermelho. Fim de Jogo.");
+} 
+// Se o comando sorteado era GIRAR e o potenciômetro variou mais que 150 unidades
+else if (comandoAtual == GIRAR && variacaoPotenciometro > 150) {
+    Serial.println("ACERTOU! Aciona som agudo duplo no Buzzer + LED Verde. Próxima rodada.");
+} 
+// Se o comando era PASSA A MÃO e o sensor identificou presença a menos de 5cm
+else if (comandoAtual == PASSAR_MAO && distanciaUltrassonico < 5) {
+    Serial.println("ACERTOU! Aciona som agudo duplo no Buzzer + LED Verde. Próxima rodada.");
+} 
+// Se o comando era apertar o Botão Amarelo e ele foi pressionado (LOW)
+else if (comandoAtual == APERTAR_AMARELO && digitalRead(BOTAO_AMARELO) == LOW) {
+    Serial.println("ACERTOU! Aciona som agudo duplo no Buzzer + LED Verde. Próxima rodada.");
+} 
+// Se o comando era apertar o Botão Azul e ele foi pressionado (LOW)
+else if (comandoAtual == APERTAR_AZUL && digitalRead(BOTAO_AZUL) == LOW) {
+    Serial.println("ACERTOU! Aciona som agudo duplo no Buzzer + LED Verde. Próxima rodada.");
+} 
+// Se o comando era apertar o Botão Verde e ele foi pressionado (LOW)
+else if (comandoAtual == APERTAR_VERDE && digitalRead(BOTAO_VERDE) == LOW) {
+    Serial.println("ACERTOU! Aciona som agudo duplo no Buzzer + LED Verde. Próxima rodada.");
+} 
+// Se o comando era apertar o Botão Vermelho e ele foi pressionado (LOW)
+else if (comandoAtual == APERTAR_VERMEDLHO && digitalRead(BOTAO_VERMELHO) == LOW) {
+    Serial.println("ACERTOU! Aciona som agudo duplo no Buzzer + LED Verde. Próxima rodada.");
+} 
+// Caso o jogador execute qualquer ação que não seja o comando correto sorteado
+else {
+    Serial.println("ERROU O COMANDO! Aciona som grave no Buzzer + LED Vermelho. Fim de Jogo.");
+}
+
+================================================================================
+                    FIM DA DOCUMENTAÇÃO TÉCNICA
+================================================================================
