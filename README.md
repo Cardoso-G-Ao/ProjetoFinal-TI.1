@@ -36,3 +36,9 @@ A partir daí é verificado o estado da rodada.
 Se o jogador tiver acertado, sua pontuação aumenta, o som de acerto é emitido, o tempo do jogo é diminuído se ainda não estiver no limite, e então o loop é reiniciado, agora mais rápido par a próxima rodada.
 
 Se o jogador errar, o som de erro é emitido, é exibido seu total de pontos e então é esperado o jogador apertar qualquer botão para o jogo recomeçar e reiniciar o looping.
+
+
+# Link do Video 
+<a>  <\a>
+
+
